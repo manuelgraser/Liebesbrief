@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Liebesbrief</title>
+
+<style>
+:root{
+  --bg1:#f4e6d6;
+  --bg2:#f1ddc6;
+  --paper:#fffaf3;
+  --ink:#3a2f2b;
+  --muted:rgba(58,47,43,.75);
+  --shadow: 0 22px 70px rgba(0,0,0,.18);
+}
+
+body{
+  margin:0;
+  padding:54px 16px;
+  font-family:Arial, Helvetica, sans-serif;
+  color:var(--ink);
+  display:flex;
+  justify-content:center;
+  background:
+    radial-gradient(900px 600px at 15% 10%, rgba(255,170,170,.22), transparent 60%),
+    radial-gradient(900px 600px at 85% 20%, rgba(255,210,170,.20), transparent 60%),
+    radial-gradient(900px 700px at 60% 85%, rgba(255,190,200,.16), transparent 60%),
+    linear-gradient(180deg, var(--bg1), var(--bg2));
+}
+
+.paper{
+  width:min(780px,96vw);
+  background:
+    radial-gradient(circle at 30% 18%, rgba(0,0,0,0.03) 0%, transparent 38%),
+    radial-gradient(circle at 70% 62%, rgba(0,0,0,0.025) 0%, transparent 42%),
+    var(--paper);
+  border:1px solid rgba(0,0,0,0.10);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  padding:44px 42px 40px;
+  line-height:1.85;
+  position:relative;
+  overflow:hidden;
+  transform-origin:50% 10%;
+}
+
+/* dezente Herz-Wasserzeichen */
+.paper::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.35;
+  background:
+    radial-gradient(circle at 14% 28%, rgba(200,80,80,.10) 0 2px, transparent 3px),
+    radial-gradient(circle at 78% 24%, rgba(200,80,80,.09) 0 2px, transparent 3px),
+    radial-gradient(circle at 64% 82%, rgba(200,80,80,.06) 0 2px, transparent 3px);
+}
+
+.paper::before{
+  content:"";
+  position:absolute;
+  top:0; left:0; right:0;
+  height:10px;
+  background:linear-gradient(90deg, rgba(200,80,80,0.25), transparent 70%);
+  pointer-events:none;
+}
+
+/* Siegel */
+.seal{
+  position:absolute;
+  top:18px;
+  right:18px;
+  width:34px;
+  height:34px;
+  border-radius:999px;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 45%),
+              radial-gradient(circle at 70% 80%, rgba(0,0,0,.18), transparent 55%),
+              #b83a4a;
+  box-shadow:0 10px 22px rgba(0,0,0,.18);
+  border:1px solid rgba(0,0,0,.12);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:rgba(255,255,255,.92);
+  font-size:14px;
+  cursor:pointer;
+  transform-origin:50% 60%;
+  z-index:3;
+}
+.seal.stamp{ animation:stamp 650ms ease-out; }
+@keyframes stamp{
+  0%{ transform:scale(1); }
+  40%{ transform:scale(.92) rotate(-2deg); }
+  80%{ transform:scale(1.05) rotate(1deg); }
+  100%{ transform:scale(1); }
+}
+
+/* ✨ Sternchen */
+.sparkle{
+  position:absolute;
+  top:12px;
+  right:56px;
+  opacity:0;
+  transform:translateY(6px) scale(.8);
+  pointer-events:none;
+  font-size:14px;
+}
+.sparkle.go{ animation:sparkle 900ms ease-out forwards; }
+@keyframes sparkle{
+  0%{ opacity:0; transform:translateY(6px) scale(.8); }
+  20%{ opacity:1; }
+  100%{ opacity:0; transform:translateY(-16px) scale(1.15); }
+}
+
+/* Kopfbereich */
+.header{ margin-bottom:22px; position:relative; z-index:1; }
+.titleRow{ display:flex; align-items:baseline; gap:10px; margin-bottom:6px; }
+
+.titleBtn{
+  border:none;
+  background:none;
+  cursor:pointer;
+  display:flex;
+  gap:10px;
+  align-items:baseline;
+  color:var(--ink);
+  padding:0;
+}
+
+.title{ font-weight:800; font-size:22px; }
+
+/* 💌 */
+.fly{
+  display:inline-block;
+  transform:translateY(-28px) translateX(-18px) rotate(-18deg);
+  opacity:0;
+  animation:flyIn 2400ms cubic-bezier(.18,.95,.18,1) 250ms forwards;
+}
+@keyframes flyIn{
+  0%{ opacity:0; }
+  70%{ opacity:1; }
+  100%{ transform:translateY(0) translateX(0) rotate(0deg); opacity:1; }
+}
+
+.meta{ color:var(--muted); font-size:14px; margin-bottom:6px; }
+
+/* Flugzeug */
+.routeWrap{ position:relative; display:inline-block; }
+.routeBtn{
+  padding:6px 12px;
+  border-radius:999px;
+  background:rgba(200,80,80,.12);
+  border:1px solid rgba(200,80,80,.18);
+  cursor:pointer;
+  font-size:13px;
+}
+.routeBtn:hover{ background:rgba(200,80,80,.18); }
+
+.plane{
+  position:absolute;
+  top:50%;
+  left:-28px;
+  transform:translateY(-50%);
+  opacity:0;
+  font-size:14px;
+}
+.plane.go{ animation:planeFly 5200ms ease-in-out forwards; }
+@keyframes planeFly{
+  0%{ left:-28px; opacity:0; }
+  15%{ opacity:1; }
+  100%{ left:calc(100% + 18px); opacity:0; }
+}
+
+/* Text */
+p{ margin:0 0 14px; position:relative; z-index:1; }
+
+.sigName{
+  font-size:34px;
+  font-weight:400;
+  color:rgba(60,35,35,.95);
+  font-family:"Brush Script MT","Segoe Script","Lucida Handwriting",cursive;
+}
+
+/* Buttons */
+.actions{ display:flex; gap:12px; margin-top:14px; position:relative; z-index:1; }
+.btn{
+  flex:1;
+  padding:12px;
+  border-radius:999px;
+  border:1px solid rgba(200,80,80,.28);
+  background:rgba(255,255,255,.55);
+  font-weight:800;
+  cursor:pointer;
+}
+.btnAccent{ background:rgba(200,80,80,.18); }
+
+.wobble{ animation:wobble 900ms ease-in-out; }
+@keyframes wobble{
+  20%{ transform:rotate(-0.6deg); }
+  45%{ transform:rotate(0.7deg); }
+  70%{ transform:rotate(-0.4deg); }
+}
+
+/* Modal */
+.modal{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.82); justify-content:center; align-items:center; z-index:999; }
+.modal img{ max-width:90%; max-height:74vh; border-radius:14px; }
+.close{ position:fixed; top:18px; right:22px; font-size:40px; color:white; cursor:pointer; }
+
+.forYou{
+  position:absolute;
+  right:22px;
+  bottom:18px;
+  font-size:12px;
+  color:rgba(200,80,80,.55);
+  opacity:0;
+  transform:translateY(6px);
+  animation:forYouIn 1600ms ease-out 1200ms forwards;
+}
+@keyframes forYouIn{ to{ opacity:1; transform:translateY(0); } }
+
+</style>
+</head>
+
+<body>
+<main class="paper" id="paper">
+
+  <div class="seal" id="seal">❤</div>
+  <div class="sparkle" id="sparkle">✨</div>
+
+  <header class="header">
+    <div class="titleRow">
+      <button class="titleBtn" id="titleBtn">
+        <span class="title">Liebesbrief</span>
+        <span class="fly" id="fly">💌</span>
+      </button>
+    </div>
+
+    <div class="meta">14. Februar 2026, Wien</div>
+
+    <div class="routeWrap">
+      <div class="routeBtn" id="routeBtn">Von Wien nach Brasilien</div>
+      <div class="plane go" id="plane">✈️</div>
+    </div>
+  </header>
+
+  <p>Allerliebste Eduarda,</p>
+  <p>heute ist Valentinstag und auch wenn du gerade auf der anderen Seite der Welt bist, ist mein Herz mit dir verbunden, denn es schlägt ganz nah bei dir. Du fehlst mir sehr. Sehr. Deine Präsenz, deine Stimme, dein Lachen und diese kleinen Momente, in denen alles ganz normal und selbstverständlich wird, sind genau die, die ich am meisten vermisse.</p>
+  <p>Manchmal ertappe ich mich dabei, wie ich dir etwas erzählen will, nur um dann zu merken, dass zwischen uns gerade ein Ozean liegt. Obwohl ich weiß, dass das, was wir haben, stärker ist als jede Entfernung, spüre ich jeden Tag, wie sehr du Teil meines Alltags geworden bist und wie sehr etwas fehlt, wenn du nicht da bist.</p>
+  <p>Ich denke oft an uns. Daran, wie wir zusammen lachen und wieder gemeinsam Dinge erleben. Genau das ist es, wonach ich mich sehne, und diese Sehnsucht ist größer, als ich sie in Worte fassen könnte.</p>
+  <p>Ich freue mich darauf, dich bald wieder in meinen Armen zu halten. Ich liebe dich von ganzem Herzen und zähle die Tage, bis wir wieder zusammen sind.</p>
+  <p>Ti amo & bisous,<br><span class="sigName">dein Manuel</span></p>
+
+  <div class="actions">
+    <button class="btn btnAccent" id="btnMoment">Ein Grund von vielen</button>
+    <button class="btn" id="btnVoice">Fast vergessen…</button>
+  </div>
+
+  <div class="forYou">für dich ❤</div>
+</main>
+
+<div class="modal" id="momentModal">
+  <span class="close" id="closeMoment">&times;</span>
+  <img src="foto1.jpeg">
+  <p style="color:white;font-style:italic;">und mein Herz hat es schneller verstanden als mein Kopf. ❤️</p>
+</div>
+
+<audio id="voice">
+  <source src="voice.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const paper=document.getElementById("paper");
+const fly=document.getElementById("fly");
+document.getElementById("titleBtn").onclick=()=>{
+  paper.classList.remove("wobble"); void paper.offsetHeight; paper.classList.add("wobble");
+  fly.style.animation="none"; void fly.offsetHeight; fly.style.animation="flyIn 2400ms cubic-bezier(.18,.95,.18,1)";
+};
+
+const plane=document.getElementById("plane");
+function runPlane(){ plane.classList.remove("go"); void plane.offsetHeight; plane.classList.add("go"); }
+document.getElementById("routeBtn").onclick=runPlane;
+
+const seal=document.getElementById("seal");
+const sparkle=document.getElementById("sparkle");
+seal.onclick=()=>{
+  seal.classList.remove("stamp");
+  sparkle.classList.remove("go");
+  void seal.offsetHeight;
+  seal.classList.add("stamp");
+  sparkle.classList.add("go");
+};
+
+const modal=document.getElementById("momentModal");
+document.getElementById("btnMoment").onclick=()=>modal.style.display="flex";
+document.getElementById("closeMoment").onclick=()=>modal.style.display="none";
+
+const voice=document.getElementById("voice");
+const btnVoice=document.getElementById("btnVoice");
+btnVoice.onclick=()=>{ if(voice.paused){ voice.play(); btnVoice.textContent="Pause"; } else { voice.pause(); btnVoice.textContent="Fast vergessen…"; } };
+voice.onended=()=>btnVoice.textContent="Fast vergessen…";
+</script>
+</body>
+</html>
